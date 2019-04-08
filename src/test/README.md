@@ -1,3 +1,3 @@
-Test with the face image that is not in LFW and the result is not bad.
+Test with the Satellite image that is in Kaggle.
 
 ![result](result.jpg)
