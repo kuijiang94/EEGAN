@@ -98,45 +98,15 @@ class SRGAN:
             with tf.variable_scope('conv_e7'):
                 x_f = conv_layer(x_f, [3, 3, 256, 64], 1)
                 x_f = lrelu(x_f)
-            res_in = x_f
-            # frame
-            for i in range(3):
-                with tf.variable_scope('block{}ex2'.format(i+1)):
-                    x1=x2=x3=x_f
-                    for j in range(3):
-                        with tf.variable_scope('block{}_{}ex1'.format(i+1,j+1)):
-                            with tf.variable_scope('ud1'):
-                                a1 = lrelu(deconv_layer(x1, [3, 3, 64, 64], [self.batch_size, self.image_size, self.image_size, 64], 1))
-                                #a1 = batch_normalize(a1, is_training)
-                            with tf.variable_scope('ud2'):
-                                b1 = lrelu(deconv_layer(x2, [3, 3, 64, 64], [self.batch_size, self.image_size, self.image_size, 64], 1))
-                                #b1 = batch_normalize(b1, is_training)
-                            with tf.variable_scope('ud3'):
-                                c1 = lrelu(deconv_layer(x3, [3, 3, 64, 64], [self.batch_size, self.image_size, self.image_size, 64], 1))
-                                #c1 = batch_normalize(c1, is_training)
-                            sum = tf.concat([a1,b1,c1],3)
-                            #sum = batch_normalize(sum, is_training)
-                            with tf.variable_scope('ud4'):
-                                x1 = lrelu(deconv_layer(tf.concat([sum,x1],3), [1, 1, 64, 256], [self.batch_size, self.image_size, self.image_size, 64], 1))
-                                #x1 = batch_normalize(x1, is_training)
-                            with tf.variable_scope('ud5'):
-                                x2 = lrelu(deconv_layer(tf.concat([sum,x2],3), [1, 1, 64, 256], [self.batch_size, self.image_size, self.image_size, 64], 1))
-                                #x2 = batch_normalize(x2, is_training)
-                            with tf.variable_scope('ud6'):
-                                x3 = lrelu(deconv_layer(tf.concat([sum,x3],3), [1, 1, 64, 256], [self.batch_size, self.image_size, self.image_size, 64], 1))
-                                #x3 = batch_normalize(x3, is_training)
-                    with tf.variable_scope('ud7'):
-                        block_out = lrelu(deconv_layer(tf.concat([x1, x2, x3],3), [3, 3, 64, 192], [self.batch_size, self.image_size, self.image_size, 64], 1))
-                    #x = x1+x2+x3+x
-                    x_f+=block_out
-            with tf.variable_scope('conv_e8'):
+            with tf.variable_scope('conv_m2'):
                 x_f = conv_layer(x_f, [3, 3, 64, 256], 1)
                 x_f = lrelu(x_f)
+            res_in = x_f
             #res_in = x_f
             # mask
             with tf.variable_scope('conv_m3'):
                 x_mask = deconv_layer(
-                    res_in, [3, 3, 64, 64], [self.batch_size, self.image_size, self.image_size, 64], 1)
+                    res_in, [3, 3, 64, 256], [self.batch_size, self.image_size, self.image_size, 64], 1)
                 x_mask = lrelu(x_mask)
             with tf.variable_scope('conv_m4'):# res_in
                 x_mask = deconv_layer(
@@ -146,7 +116,6 @@ class SRGAN:
                 x_mask = deconv_layer(
                     x_mask, [3, 3, 256, 128], [self.batch_size, self.image_size, self.image_size, 256], 1)
                 x_mask = lrelu(x_mask)
-
             frame_mask = tf.nn.sigmoid(x_mask)
             x_frame = frame_mask*x_f + x_f
             with tf.variable_scope('conv_m6'):
@@ -188,22 +157,6 @@ class SRGAN:
             x, weight, strides=[1, K, K, 1], padding='SAME')
         return downscaled
     
-    def sobel(self, x):
-        weight=tf.constant([[[-1.0, -1.0, -1.0], [0, 0, 0], [1.0, 1.0, 1.0],
-                                  [-2.0, -2.0, -2.0], [0, 0, 0], [2.0, 2.0, 2.0],
-                                  [-1.0, -1.0, -1.0], [0, 0, 0], [1.0, 1.0, 1.0]],
-                            [[-1.0, -1.0, -1.0], [0, 0, 0], [1.0, 1.0, 1.0],
-                                  [-2.0, -2.0, -2.0], [0, 0, 0], [2.0, 2.0, 2.0],
-                                  [-1.0, -1.0, -1.0], [0, 0, 0], [1.0, 1.0, 1.0]],
-                            [[-1.0, -1.0, -1.0], [0, 0, 0], [1.0, 1.0, 1.0],
-                                  [-2.0, -2.0, -2.0], [0, 0, 0], [2.0, 2.0, 2.0],
-                                  [-1.0, -1.0, -1.0], [0, 0, 0], [1.0, 1.0, 1.0]]],
-                                 shape=[3, 3, 3, 3])
-        frame=tf.nn.conv2d(x,weight,[1,1,1,1],padding='SAME')
-        frame = tf.cast(((frame - tf.reduce_min(frame)) / (tf.reduce_max(frame) - tf.reduce_min(frame)))*1.0, tf.float32)
-        #frame = tf.cast(((frame - tf.reduce_min(frame)) / (tf.reduce_max(frame) - tf.reduce_min(frame))) * 255, tf.uint8)
-        return frame
-        
     def Laplacian(self, x):
         weight=tf.constant([
         [[[-1.,0.,0.],[0.,-1.,0.],[0.,0.,-1.]],[[-1.,0.,0.],[0.,-1.,0.],[0.,0.,-1.]],[[-1.,0.,0.],[0.,-1.,0.],[0.,0.,-1.]]],
@@ -212,20 +165,5 @@ class SRGAN:
         ])
         frame=tf.nn.conv2d(x,weight,[1,1,1,1],padding='SAME')
         #frame = tf.cast(((frame - tf.reduce_min(frame)) / (tf.reduce_max(frame) - tf.reduce_min(frame))) * 255, tf.uint8)
-        return frame
-    
-    def sobelg(self, x):
-        weight=tf.constant([[[-1.0, -1.0, -1.0], [0, 0, 0], [1.0, 1.0, 1.0],
-                                  [-2.0, -2.0, -2.0], [0, 0, 0], [2.0, 2.0, 2.0],
-                                  [-1.0, -1.0, -1.0], [0, 0, 0], [1.0, 1.0, 1.0]],
-                            [[-1.0, -1.0, -1.0], [0, 0, 0], [1.0, 1.0, 1.0],
-                                  [-2.0, -2.0, -2.0], [0, 0, 0], [2.0, 2.0, 2.0],
-                                  [-1.0, -1.0, -1.0], [0, 0, 0], [1.0, 1.0, 1.0]],
-                            [[-1.0, -1.0, -1.0], [0, 0, 0], [1.0, 1.0, 1.0],
-                                  [-2.0, -2.0, -2.0], [0, 0, 0], [2.0, 2.0, 2.0],
-                                  [-1.0, -1.0, -1.0], [0, 0, 0], [1.0, 1.0, 1.0]]],
-                                 shape=[3, 3, 3, 3])
-        frame=lrelu(tf.nn.conv2d(x,weight,[1,1,1,1],padding='SAME'))
-        frame = tf.cast(((frame - tf.reduce_min(frame)) / (tf.reduce_max(frame) - tf.reduce_min(frame))) * 255, tf.uint8)
         return frame
         
