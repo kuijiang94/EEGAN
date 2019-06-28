@@ -7,8 +7,9 @@ with TensorFlow.
 # Requirements
 
 - Python 3
-- TensorFlow 1.1
+- TensorFlow 1.1(GPU)
 - OpenCV
+- tqdm 
 
 # Usage
 
@@ -24,7 +25,7 @@ $ python download_images.py
 $ python preprocess.py
 ```
 
-Train with:
+Train with VGG-19:
 
 ```
 $ cd vgg19
@@ -38,21 +39,37 @@ https://drive.google.com/open?id=0B-s6ok7B0V9vcXNfSzdjZ0lCc0k)
 
 ## II. Train the EEGAN model
 
-Train with:
+Train with EEGAN:
 
+Download the satellite image from Kaggle Open Source dataset(https://www.kaggle.com/c/draper-satellite-image-chronology/data) and preprocess them to obetain the training samples with 
+
+```
+$ cd src/lfw
+$ python lfw.py
+```
+
+Then train the model EEGAN with:
 ```
 $ cd src
 $ python train.py
 ```
 
-The result will be stored in "src/result".
+The evaluation results will be stored in "src/result".
 
+Test with EEGAN:
+
+Put the test images into "src/test/test30" or your own folder, then
+```
+$ cd src/test
+$ python test.py
+```
+
+The tes results will be stored in "src/test/result30".
 
 
 # Results
 
 ## Kaggle
-
 
 
 # Loss function
