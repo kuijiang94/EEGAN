@@ -58,6 +58,8 @@ The evaluation results will be stored in "src/result".
 
 Test with EEGAN:
 
+The pretrained weight can be downloaded in (https://drive.google.com/open?id=1HeQBXE67urcKOJv0GfmJBsA0zZznAAwn).
+
 Put the test images into "src/test/test30" or your own folder, then
 ```
 $ cd src/test
