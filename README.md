@@ -1,7 +1,7 @@
 # Edge Enhanced GAN For Remote Sensing Image Superresolution (EEGAN)
 
 This is an implementation of the SRGAN model proposed in the paper
-([Edge Enhanced GAN For Remote Sensing Image Superresolution](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8677274))
+([Edge Enhanced GAN For Remote Sensing Image Superresolution](https://ieeexplore.ieee.org/document/8677274))
 with TensorFlow.
 
 # Requirements
