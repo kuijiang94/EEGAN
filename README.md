@@ -45,7 +45,7 @@ Download the satellite image from Kaggle Open Source dataset(https://www.kaggle.
 
 ```
 $ cd src/lfw
-$ python lfw.py
+$ python preprocess.py
 ```
 
 Then train the model EEGAN with:
