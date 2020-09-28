@@ -32,9 +32,8 @@ $ cd vgg19
 $ python train.py
 ```
 
-Or you can download the pretrained model file:
-[vgg19_model.tar.gz](
-https://drive.google.com/open?id=0B-s6ok7B0V9vcXNfSzdjZ0lCc0k)
+Or you can download the pretrained vgg19 model file:
+[Google Drive](https://drive.google.com/open?id=0B-s6ok7B0V9vcXNfSzdjZ0lCc0k)[Baidu, password:jkw](https://pan.baidu.com/s/1O1Ke6VmdanelMHtIagjwQQ)
 
 
 ## II. Train the EEGAN model
