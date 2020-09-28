@@ -33,7 +33,7 @@ $ python train.py
 ```
 
 Or you can download the pretrained vgg19 model file from 
-([Google Drive](https://drive.google.com/open?id=0B-s6ok7B0V9vcXNfSzdjZ0lCc0k) and [Baidu, password:jkw](https://pan.baidu.com/s/1O1Ke6VmdanelMHtIagjwQQ))
+([Google Drive](https://drive.google.com/open?id=0B-s6ok7B0V9vcXNfSzdjZ0lCc0k) and [Baidu](https://pan.baidu.com/s/1O1Ke6VmdanelMHtIagjwQQ), password:jkw)
 
 
 ## II. Train the EEGAN model
