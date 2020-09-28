@@ -40,7 +40,7 @@ Or you can download the pretrained vgg19 model file from
 
 Train with EEGAN:
 
-Download the satellite image from Kaggle Open Source dataset(https://www.kaggle.com/c/draper-satellite-image-chronology/data) and preprocess them to obetain the training samples with 
+Download the satellite image from [Kaggle Open Source dataset](https://www.kaggle.com/c/draper-satellite-image-chronology/data) and preprocess them to obetain the training samples with 
 
 ```
 $ cd src/lfw
@@ -57,7 +57,7 @@ The evaluation results will be stored in "src/result".
 
 Test with EEGAN:
 
-The pretrained weight can be downloaded in (https://drive.google.com/file/d/1HeQBXE67urcKOJv0GfmJBsA0zZznAAwn/view?usp=sharing).
+The pretrained weight can be downloaded from [weight file](https://drive.google.com/file/d/1HeQBXE67urcKOJv0GfmJBsA0zZznAAwn/view?usp=sharing).
 
 Put the test images into "src/test/test30" or your own folder, then
 ```
