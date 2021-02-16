@@ -62,7 +62,7 @@ for f in file:
     else:
         if W_1==W and H_1 == H:
             fake = sess.run(
-                [model.ZConv_VDSR],
+                [model.model.imitation_sr, model.base_sr, model.frame_sr],
                 feed_dict={x: input_, is_training: False})
         else:
             #sess.close()
